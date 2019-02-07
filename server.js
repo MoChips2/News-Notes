@@ -1,5 +1,6 @@
 //Dependencies
 var express = require("express");
+var exphbs = require("express-handlebars");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var axios = require("axios");
@@ -15,6 +16,9 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/NewsNotes";
 
@@ -42,22 +46,21 @@ app.get("/scrape", function(req, res) {
       db.Article.create(result)
         .then(function(dbArt) {
           console.log(dbArt);
+          res.redirect("/");
         })
         .catch(function(err) {
           console.log(err);
         });
     });
-
-    res.send("Scrape is Complete!")
   });
 });
 
 // Grabs all articles from the db
-app.get("/articles", function(req, res) {
+app.get("/", function(req, res) {
 
   db.Article.find({})
     .then(function(dbArt) {
-      res.json(dbArt);
+      res.render("index", {ArtObj: dbArt});
     })
     .catch(function(err) {
       res.json(err);
@@ -76,6 +79,29 @@ app.get("/articles/:id", function(req, res) {
       res.json(err);
     });
 })
+
+// Saves and updates an Article's corresponding Note
+app.post("/articles/:id", function(req, res) {
+
+  db.Note.create(req.body)
+  .then(function(dbNote) {
+   console.log(dbNote);
+  });
+});
+
+app.get("/delete", function(req, res) {
+  
+  db.Article.remove({})
+  .then(function() {
+    var deleteMessage = "Looks like there are no articles. Hit 'Scrape New Articles!' to get new articles.";
+    res.render("index", {deleteMessage})
+  //  res.send("Looks like there are no articles. Hit 'Scrape New Articles!' to get new articles.")
+  })
+  .catch(function(err) {
+    res.json(err);
+  })
+})
+
 
 app.listen(PORT, function() {
   console.log("App now listening at localhost:" + PORT);

@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">WaPo</a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+      <a href="/" class="nav-link mr-3">Home</a>
+    </li>
+    <li class="nav-item">
+      <a href="/saved" class="nav-link mr-3">Saved Articles</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a href="/scrape" class="btn btn-info mr-3 scraper">Scrape New Articles!</a>
+    </li>
+    <li>
+      <a href="/delete" class="btn btn-danger mr-3 delete">Delete All Articles</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="jumbotron text-center bg-secondary">
+  <div class="caption">
+    <h1>Political Updates</h1>
+    <p>Washington Post Edition</p>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="articles">
+    <div class="card">
+      <div class="card-body">
+        {{#each ArtObj}}
+        <h5><a class="card-title" href="{{this.link}}">{{this.headline}}</a></h5>
+        <p class="card-text">{{this.summary}}</p>
+        <hr>
+        {{/each}}
+      </div>
+    </div>
+   <!-- <ul>
+      {{#each ArtObj}}
+      <li>{{this.headline}}</li>
+      <li>{{this.summary}}</li>
+      <li>{{this.link}}</li>
+      {{/each}}
+    </ul>  -->
+    <p id="deleteHeader">{{deleteMessage}}</p>
+  </div>
+</div>
