@@ -1,5 +1,6 @@
 //Dependencies
 var express = require("express");
+var path = require("path");
 var exphbs = require("express-handlebars");
 var logger = require("morgan");
 var mongoose = require("mongoose");
@@ -102,6 +103,9 @@ app.get("/delete", function(req, res) {
   })
 })
 
+app.get("/", function(req, res) {
+  res.render(path.join(__dirname, "./views/index.handlebars"));
+})
 
 app.listen(PORT, function() {
   console.log("App now listening at localhost:" + PORT);
