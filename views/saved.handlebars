@@ -20,19 +20,19 @@
 
 <div class="jumbotron text-center bg-secondary text-light">
   <div class="caption">
-    <h1>Political Updates</h1>
-    <h4>Washington Post Edition</h4>
+    <h1>Saved Articles</h1>
+    <h4>Notes/Comments</h4>
   </div>
 </div>
 
 <div class="container-fluid">
   <div class="articles">
     <div class="card"> 
-      {{#each ArtObj}}
-      <div class="card-body">
+      {{#each saved}}
+      <div data-id="{{this._id}}" class="card-body">
         <h5><a class="card-title" + href="{{this.link}}">{{this.headline}}</a></h5>
         <p class="card-text">{{this.summary}}</p>
-        <div class="btn btn-info save" data-id="{{this._id}}">Save</div>
+        <div class="btn btn-info save">Save</div>
       </div>
       <hr>
       {{/each}}
