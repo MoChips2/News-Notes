@@ -5,7 +5,7 @@
       <a href="/" class="nav-link mr-3">Home</a>
     </li>
     <li class="nav-item">
-      <a href="/saved" class="nav-link mr-3">Saved Articles</a>
+      <a href="/saved" class="nav-link mr-3 saved">Saved Articles</a>
     </li>
   </ul>
   <ul class="navbar-nav ml-auto">
@@ -32,7 +32,7 @@
       <div class="card-body">
         <h5><a class="card-title" + href="{{this.link}}">{{this.headline}}</a></h5>
         <p class="card-text">{{this.summary}}</p>
-        <div class="btn btn-info save" data-id="{{this._id}}">Save</div>
+        <div class="btn btn-info save" data-id="{{this._id}}">Save Article</div>
       </div>
       <hr>
       {{/each}}

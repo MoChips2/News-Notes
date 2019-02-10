@@ -35,9 +35,6 @@ router.get("/scrape", function(req, res) {
   });
 });
 
-// app.get("/", function(req, res) {
-//  res.render(path.join(__dirname, "./views/index.handlebars"));
-// })
 
 // Grabs all articles from the db
 router.get("/", function(req, res) {
@@ -52,9 +49,55 @@ router.get("/", function(req, res) {
     });
 });
 
+// Grabs all saved articles from the db
 router.get("/saved", function(req, res) {
-  res.render("../views/saved.handlebars");
-})
+
+  db.Article.find({ isSaved: true })
+    .then(function(dbArt) {
+      console.log(dbArt);
+      res.render("saved", { saved: dbArt });
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+// change article to a saved article
+router.post("/saveArticle/:id", function(req, res) {
+  db.Article.update(
+    { _id: req.params.id },
+    {
+      $set: {
+        isSaved: true
+      }
+    }
+  )
+    .then(function(result) {
+      console.log(result);
+      res.json(result);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+router.post("/deleteArticle/:id", function(req, res) {
+  db.Article.update(
+    { _id: req.params.id },
+    {
+      $set: {
+        isSaved: false
+      }
+    }
+  )
+    .then(function(result) {
+      console.log(result);
+      res.json(result);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
 
 // Grabs a specific Article by id, and populates this id with it's corresponding note
 router.get("/articles/:id", function(req, res) {
@@ -62,7 +105,7 @@ router.get("/articles/:id", function(req, res) {
   db.Article.findOne({ _id: req.params.id })
     .populate("note")
     .then(function(dbArt) {
-      res.render("saved", { saved: dbArt });
+      res.json(dbArt);
     })
     .catch(function(err) {
       res.json(err);
@@ -78,13 +121,13 @@ router.post("/articles/:id", function(req, res) {
     });
 });
 
+// deletes all articles from the Article document.
 router.get("/delete", function(req, res) {
 
   db.Article.remove({})
     .then(function() {
       var deleteMessage = "Looks like there are no articles. Hit 'Scrape New Articles!' to get new articles.";
       res.render("index", { deleteMessage })
-      //  res.send("Looks like there are no articles. Hit 'Scrape New Articles!' to get new articles.")
     })
     .catch(function(err) {
       res.json(err);
