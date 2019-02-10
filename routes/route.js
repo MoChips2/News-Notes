@@ -4,6 +4,7 @@ var router = express.Router();
 var axios = require("axios");
 var cheerio = require("cheerio");
 var db = require("../models")
+
 // Routes
 
 // Scrapes all news articles from Washington Post homepage
@@ -36,10 +37,10 @@ router.get("/scrape", function(req, res) {
 });
 
 
-// Grabs all articles from the db
+// Grabs all scraped articles from the db
 router.get("/", function(req, res) {
 
-  db.Article.find({})
+  db.Article.find({ isSaved: false })
     .then(function(dbArt) {
       console.log(dbArt);
       res.render("index", { ArtObj: dbArt });
@@ -62,8 +63,9 @@ router.get("/saved", function(req, res) {
     });
 });
 
-// change article to a saved article
+// Change article to a saved article
 router.post("/saveArticle/:id", function(req, res) {
+
   db.Article.update(
     { _id: req.params.id },
     {
@@ -81,7 +83,9 @@ router.post("/saveArticle/:id", function(req, res) {
     });
 });
 
+// Remove article from saved articles
 router.post("/deleteArticle/:id", function(req, res) {
+
   db.Article.update(
     { _id: req.params.id },
     {
@@ -103,8 +107,11 @@ router.post("/deleteArticle/:id", function(req, res) {
 router.get("/articles/:id", function(req, res) {
 
   db.Article.findOne({ _id: req.params.id })
-    .populate("note")
+    .populate("Note")
     .then(function(dbArt) {
+      console.log("populating note.....");
+      console.log(dbArt);
+      console.log("--------------------------------");
       res.json(dbArt);
     })
     .catch(function(err) {
@@ -114,10 +121,15 @@ router.get("/articles/:id", function(req, res) {
 
 // Saves and updates an Article's corresponding Note
 router.post("/articles/:id", function(req, res) {
-
+  console.log("this is req.body......")
+  console.log(req.body);
+  console.log("--------------------------------");
   db.Note.create(req.body)
     .then(function(dbNote) {
+      console.log("dbNote.............")
       console.log(dbNote);
+      console.log("--------------------------------");
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     });
 });
 

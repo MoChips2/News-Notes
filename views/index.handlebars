@@ -29,8 +29,8 @@
   <div class="articles">
     <div class="card"> 
       {{#each ArtObj}}
-      <div class="card-body">
-        <h5><a class="card-title" + href="{{this.link}}">{{this.headline}}</a></h5>
+      <div class="card-body bg-secondary text-white">
+        <h5><a class="card-title text-info" + href="{{this.link}}">{{this.headline}}</a></h5>
         <p class="card-text">{{this.summary}}</p>
         <div class="btn btn-info save" data-id="{{this._id}}">Save Article</div>
       </div>
