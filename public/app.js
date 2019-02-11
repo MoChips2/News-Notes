@@ -37,7 +37,7 @@ $(".delete").on("click", function() {
 // displaying notes for selected Article
 $("#note-display").on("click", function() {
 
-    var thisId = $("#unsave").attr("data-id");
+    var thisId = $(this).attr("data-id");
     console.log(thisId);
 
     $.ajax({
@@ -46,7 +46,7 @@ $("#note-display").on("click", function() {
     })
       .then(function(data) {
         console.log(data);
-        $(".modal-title").text("Article: " + data._id);
+        $(".modal-title").text("Article: " + thisId);
         $("#ModalCenter").modal('show');
       })
  
@@ -57,7 +57,7 @@ $("#note-display").on("click", function() {
 // saving note for a specific article
 $("#save-note").on("click", function() {
   
-  var thisId = $("#unsave").attr("data-id");
+  var thisId = $(this).attr("data-id");
   console.log(thisId);
 
   $.ajax({

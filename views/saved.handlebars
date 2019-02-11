@@ -32,7 +32,7 @@
       <div class="card-body bg-secondary text-white art-div">
         <h5><a class="card-title text-info" + href="{{this.link}}">{{this.headline}}</a></h5>
         <p class="card-text">{{this.summary}}</p>
-        <button class="btn btn-warning" id="note-display" data-toggle="modal" data-target="#ModalCenter">Notes</button>
+        <button class="btn btn-warning" id="note-display" data-id="{{this._id}}" data-toggle="modal" data-target="#ModalCenter">Notes</button>
         <div class="btn btn-success float-right delete" id="unsave" data-id="{{this._id}}">Remove Saved Articles</div>
       </div>
       <hr>
